@@ -3,8 +3,6 @@ from .models import CustomUser
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.contrib.auth.admin import UserAdmin
 
-# Register your models here.
-# ...existing code...
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
@@ -14,10 +12,15 @@ class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
         (None, {'fields': ('name',)}),
     )
-    add_fieldsets = UserAdmin.add_fieldsets + (
-        (None, {'fields': ('name',)}),
+    
+    # Replace the += with a complete redefinition
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'email', 'name', 'password1', 'password2'),
+        }),
     )
+    
     search_fields = ('email', 'username', 'name')
 
-# Register the admin class with the model
 admin.site.register(CustomUser, CustomUserAdmin)
